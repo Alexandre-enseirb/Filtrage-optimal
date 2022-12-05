@@ -1,0 +1,14 @@
+# autosave files
+*.asv
+.gitmodules
+LICENSE
+# old files
+OLD_*
+# unwanted matlab data
+*.mat
+# report files
+*.tex
+*.aux
+*.fls
+*.log
+rapport/
