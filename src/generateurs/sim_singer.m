@@ -1,19 +1,25 @@
 function [X] = sim_singer(N, a, T, sigma2)
-    %SIM_SINGER simule sur N points l'evolution d'un processus a deux
-    %dimensions x et y selon les parametres a et T
-    
-    if ~exist('sigma2', 'var')
-        sigma2 = struct("x", 0.0, "y", 0.0);
-    end
-    
-    X = zeros(6,N);
-    mu = [0; 0; 0];
-    
-    for i=1:N-1
-        X_tmp = update_singer(X(:,i), a, T);
-        Q_x   = get_Q(sigma2.x, a, T);
-        Q_y   = get_Q(sigma2.y, a, T);
-        R     = [chol(Q_x);chol(Q_y)];
-        W     = repmat(mu,2,1) + [R*randn(size(R,2),1)];% R*randn(size(R,2),1)];
-        X(:,i+1) = X_tmp+W;
-    end
+%SIM_SINGER simule sur N points l'evolution d'un processus a deux
+%dimensions x et y selon les parametres a et T
+
+if ~exist('sigma2', 'var')
+    sigma2 = 0.0;
+end
+
+X = zeros(3,N);
+mu = [0; 0; 0];
+
+phi = [1  T (exp(-a*T) + a * T - 1)/a^2;...
+    0  1      (1 - exp(-a*T))/a;     ...
+    0  0          exp(-a*T)         ];
+
+% mise a jour
+for i=1:N-1
+    X_tmp      = phi * X(:,i);
+    Q          = chol(get_Q(sigma2, a, T));
+    W          = mu + Q*randn(size(Q,2),1);
+    X(:,i+1) = X_tmp+W;
+end
+
+
+
