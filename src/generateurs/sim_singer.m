@@ -17,7 +17,7 @@ phi = [1  T (exp(-a*T) + a * T - 1)/a^2;...
 for i=1:N-1
     X_tmp      = phi * X(:,i);
     Q          = chol(get_Q(sigma2, a, T));
-    W          = mu + Q*randn(size(Q,2),1);
+    W          = mu + Q.'*randn(size(Q,2),1);
     X(:,i+1) = X_tmp+W;
 end
 
