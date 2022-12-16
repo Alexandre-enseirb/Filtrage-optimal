@@ -1,5 +1,5 @@
 function X_smooth = lissage(X_hat, P, phi)
-    N = length(Y);
+    N = length(X_hat);
     X_smooth = zeros(size(X_hat));
     X_smooth(:, N) = X_hat(:, N);
     P_smooth = P.aposter(:, :, N);

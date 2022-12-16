@@ -31,8 +31,8 @@ Qy  = get_Q(params.sigma_2m.y, params.alpha, params.T);
 [X_hat.y, P.y] = kalman(Y.y, phi, H, Qx, R);
 
 % lissage
-X_smooth.x = lissage(Y.x, X_hat.x, P.x, phi);
-X_smooth.y = lissage(Y.y, X_hat.y, P.y, phi);
+X_smooth.x = lissage(X_hat.x, P.x, phi);
+X_smooth.y = lissage(X_hat.y, P.y, phi);
 
 %%
 subplot(221)
