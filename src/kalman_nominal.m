@@ -1,6 +1,6 @@
 clear; clc; close all; dbstop if error;
 
-addpath("generateurs/", "filtrage");
+addpath("generateurs/", "filtrage", "tools");
 
 %% Parametres
 params.alpha = 1;  % croissance de la fonction d'auto-corrélation
@@ -38,32 +38,6 @@ Qy  = get_Q(params.sigma_2m.y, params.alpha, params.T);
 X_smooth.x = lissage(X_hat.x, P.x, phi);
 X_smooth.y = lissage(X_hat.y, P.y, phi);
 
-%%
-subplot(221)
-plot(X.x(1, :), X.y(1, :))
-title("Trajectoire réelle")
-xlabel("X")
-ylabel("Y")
-grid
-
-subplot(222)
-plot(Y.x(1, :), Y.y(1, :), ".")
-title("Trajectoire bruitée")
-xlabel("X")
-ylabel("Y")
-grid
-
-subplot(223)
-plot(X_hat.x(1, :), X_hat.y(1, :));
-title("Trajectoire estimée")
-xlabel("X")
-ylabel("Y")
-grid
-
-subplot(224)
-plot(X_smooth.x(1, :), X_smooth.y(1, :));
-title("Trajectoire lissée")
-xlabel("X")
-ylabel("Y")
-grid
+%% -- Affichage
+display_trajectory(X,Y,X_hat,X_smooth,"Filtrage de Kalman nominal");
 
