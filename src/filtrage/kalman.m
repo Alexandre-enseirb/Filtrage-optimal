@@ -1,4 +1,4 @@
-function [X_hat, P] = kalman(Y, phi, H, Q, R)
+function [X_hat, P] = kalman(Y, phi, H, Q, R, G)
 %KALMAN applique le filtre de Kalman sur le vecteur d'état observé Y,
 %connaissant la matrice de transition phi, la matrice de covariance du
 %bruit de modèle, le filtre H, et la matrice de covariance du bruit des observations R.
@@ -12,7 +12,7 @@ function [X_hat, P] = kalman(Y, phi, H, Q, R)
 
     for k = 2:N
         X_k_apriori = phi * X_k_aposter;
-        P.apriori(:, :, k) = phi * P.aposter(:, :, k-1) * phi.' + Q*Q.';
+        P.apriori(:, :, k) = phi * P.aposter(:, :, k-1) * phi.' + G(k)*Q*G(k).';
         K_k = P.apriori(:, :, k) * H.' / (H * P.apriori(:, :, k) * H.' + R);
         X_k_aposter = X_k_apriori + K_k * (Y(:, k) - H*X_k_apriori);
         P.aposter(:, :, k) = (eye(nb_var_etat) - K_k * H) * P.apriori(:, :, k);

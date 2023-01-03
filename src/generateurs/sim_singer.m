@@ -1,4 +1,4 @@
-function [X] = sim_singer(N, alpha, T, sigma2)
+function [X] = sim_singer(N, alpha, T, sigma2, G)
 %SIM_SINGER simule sur N points l'évolution d'un processus a deux
 %dimensions x et y selon les parametres a et T
 
@@ -17,5 +17,5 @@ A = chol(Q).';  % Q = A*(A^t)
 for i=1:N-1
     X_next = phi * X(:, i);
     W      = A*randn(nb_var_etat, 1);
-    X(:, i+1) = X_next + W;
+    X(:, i+1) = X_next + G(k)*W;
 end

@@ -10,14 +10,14 @@ params.T = 1;      % période d'echantillonage
 % variance de l'acceleration en x et en y a l'instant 0
 params.sigma_2m = struct("x", 1.2, "y", 0.9);
 nb_var_etat = 3;
-
+G = 10*ones(1,params.N);
 % bruit de mesure
-sigma2_measure = 200;
+sigma2_measure = 2000;
 
 %% Une realisation
 % simulation d'un mouvement singer
-X.x = sim_singer(params.N, params.alpha(1), params.T, params.sigma_2m.x);
-X.y = sim_singer(params.N, params.alpha(1), params.T, params.sigma_2m.y);
+X.x = sim_singer(params.N, params.alpha(1), params.T, params.sigma_2m.x, G);
+X.y = sim_singer(params.N, params.alpha(1), params.T, params.sigma_2m.y, G);
 
 % ajout du bruit d'observation
 R = get_R(sigma2_measure, nb_var_etat);
@@ -31,8 +31,8 @@ Qx  = get_Q(params.sigma_2m.x, params.alpha, params.T);
 Qy  = get_Q(params.sigma_2m.y, params.alpha, params.T);
 
 % filtrage
-[X_hat.x, P.x] = kalman(Y.x, phi, H, Qx, R);
-[X_hat.y, P.y] = kalman(Y.y, phi, H, Qx, R);
+[X_hat.x, P.x] = kalman(Y.x, phi, H, Qx, R, G);
+[X_hat.y, P.y] = kalman(Y.y, phi, H, Qx, R, G);
 
 % lissage
 X_smooth.x = lissage(X_hat.x, P.x, phi);
