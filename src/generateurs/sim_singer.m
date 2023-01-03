@@ -17,5 +17,5 @@ A = chol(Q).';  % Q = A*(A^t)
 for i=1:N-1
     X_next = phi * X(:, i);
     W      = A*randn(nb_var_etat, 1);
-    X(:, i+1) = X_next + G(k)*W;
+    X(:, i+1) = X_next + G(i)*W;
 end

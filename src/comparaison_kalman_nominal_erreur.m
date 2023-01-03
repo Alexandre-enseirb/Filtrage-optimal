@@ -9,6 +9,7 @@ params.T = 1;              % période d'echantillonage
 
 params.alpha.sous_estime = 0.2 * params.alpha.nominal;
 params.alpha.sur_estime  = 1.8 * params.alpha.nominal;
+G = 1*ones(params.N,1);
 
 % variance de l'acceleration en x et en y a l'instant 0
 params.sigma_2m = struct("x", 1.2, "y", 0.9);
@@ -24,8 +25,8 @@ nb_combinaisons = 7; % combinaisons de parametres
 
 %% Une realisation
 % simulation d'un mouvement singer
-X.x = sim_singer(params.N, params.alpha.nominal, params.T, params.sigma_2m.x);
-X.y = sim_singer(params.N, params.alpha.nominal, params.T, params.sigma_2m.y);
+X.x = sim_singer(params.N, params.alpha.nominal, params.T, params.sigma_2m.x, G);
+X.y = sim_singer(params.N, params.alpha.nominal, params.T, params.sigma_2m.y, G);
 
 % ajout du bruit d'observation
 R.nominal = get_R(sigma2_measure.nominal, nb_var_etat);
@@ -59,8 +60,8 @@ for i=1:nb_combinaisons
     Qy_i = cell2mat(Qy_cell(i));
 
     % -- filtrage
-    [X_hat(i).x, P(i).x] = kalman(Y.x, phi, H, Qx_i, R_i);
-    [X_hat(i).y, P(i).y] = kalman(Y.y, phi, H, Qy_i, R_i);
+    [X_hat(i).x, P(i).x] = kalman(Y.x, phi, H, Qx_i, R_i, G);
+    [X_hat(i).y, P(i).y] = kalman(Y.y, phi, H, Qy_i, R_i, G);
 
     % -- lissage
     X_smooth(i).x = lissage(X_hat(i).x, P(i).x, phi);

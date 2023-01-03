@@ -10,9 +10,9 @@ params.T = 1;      % période d'echantillonage
 % variance de l'acceleration en x et en y a l'instant 0
 params.sigma_2m = struct("x", 1.2, "y", 0.9);
 nb_var_etat = 3;
-G = 10*ones(1,params.N);
+G = 1*ones(1,params.N);
 % bruit de mesure
-sigma2_measure = 2000;
+sigma2_measure = 200;
 
 %% Une realisation
 % simulation d'un mouvement singer
